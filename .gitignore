@@ -1,0 +1,7 @@
+*.user
+*.suo
+.vs/
+bin/
+obj/
+settings.ini
+/LU-Click-Pro.exe
