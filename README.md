@@ -34,6 +34,10 @@ Chạy `powershell -ExecutionPolicy Bypass -File .\source\package.ps1` để bui
 
 ## Bản 1.3
 
+### Cập nhật v1.6 — DPI
+
+Co giãn bố cục theo DPI hệ thống thay cho kích thước cố định, tăng chiều cao số thống kê để tránh cắt chữ. Đã kiểm tra mô phỏng khung và font ở 100%, 125%, 150%, 200%; chưa kiểm tra trực tiếp trên máy 2K của người dùng. Thoát và mở lại app sau khi thay đổi Scale của Windows. Khi chuyển giữa màn hình khác DPI, Windows có thể phóng ảnh cửa sổ nên độ nét có thể giảm.
+
 - Giao diện Champagne: nền than, viền vàng, thẻ bo góc và trạng thái chọn tương phản.
 - Thanh đóng/thu nhỏ luôn tách khỏi vùng nội dung cuộn.
 - Sáu profile; click trái/phải/giữa, đơn/đúp, khoảng nghỉ hoặc CPS, giới hạn click và tùy chỉnh vị trí.

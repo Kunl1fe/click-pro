@@ -102,9 +102,11 @@ namespace LuClickPro
 
         public MainForm()
         {
+            SuspendLayout();
             Text = "LU CLICK PRO • Champagne Edition";
             ClientSize = new Size(920, 715);
-            AutoScaleMode = AutoScaleMode.None;
+            AutoScaleDimensions = new SizeF(96f, 96f);
+            AutoScaleMode = AutoScaleMode.Dpi;
             MinimumSize = new Size(640, 460);
             StartPosition = FormStartPosition.CenterScreen;
             FormBorderStyle = FormBorderStyle.None;
@@ -118,8 +120,6 @@ namespace LuClickPro
             profiles = new ProfileConfig[6];
             for (int i = 0; i < profiles.Length; i++) profiles[i] = ProfileConfig.Default();
             BuildUi();
-            Rectangle available = Screen.FromControl(this).WorkingArea;
-            ClientSize = new Size(Math.Min(920, available.Width - 32), Math.Min(715, available.Height - 32));
             LoadSettings();
             RegisterConfiguredHotkeys();
 
@@ -130,6 +130,16 @@ namespace LuClickPro
 
             FormClosing += OnFormClosing;
             Resize += OnResize;
+            ResumeLayout(true);
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            Rectangle available = Screen.FromControl(this).WorkingArea;
+            Size = new Size(Math.Min(Width, available.Width - 24), Math.Min(Height, available.Height - 24));
+            Location = new Point(available.Left + (available.Width - Width) / 2,
+                available.Top + (available.Height - Height) / 2);
         }
 
         private void BuildUi()
@@ -193,21 +203,21 @@ namespace LuClickPro
             hero.Controls.Add(statusLabel);
             hero.Controls.Add(NewLabel("F1–F6 chạy profile  •  F7 lấy vị trí  •  F8 dừng khẩn cấp", 24, 52, 430, 26, 9.5f, FontStyle.Regular, TextMuted));
 
-            countLabel = NewLabel("0", 490, 17, 100, 30, 17, FontStyle.Bold, TextMain);
+            countLabel = NewLabel("0", 490, 12, 100, 38, 17, FontStyle.Bold, TextMain);
             countLabel.TextAlign = ContentAlignment.MiddleCenter;
             hero.Controls.Add(countLabel);
             Label countCaption = NewLabel("TỔNG CLICK", 490, 52, 100, 20, 8, FontStyle.Bold, TextMuted);
             countCaption.TextAlign = ContentAlignment.MiddleCenter;
             hero.Controls.Add(countCaption);
 
-            rateLabel = NewLabel("0.0", 610, 17, 100, 30, 17, FontStyle.Bold, Cyan);
+            rateLabel = NewLabel("0.0", 610, 12, 100, 38, 17, FontStyle.Bold, Cyan);
             rateLabel.TextAlign = ContentAlignment.MiddleCenter;
             hero.Controls.Add(rateLabel);
             Label rateCaption = NewLabel("CLICK/GIÂY", 610, 52, 100, 20, 8, FontStyle.Bold, TextMuted);
             rateCaption.TextAlign = ContentAlignment.MiddleCenter;
             hero.Controls.Add(rateCaption);
 
-            uptimeLabel = NewLabel("00:00", 730, 17, 110, 30, 17, FontStyle.Bold, TextMain);
+            uptimeLabel = NewLabel("00:00", 730, 12, 110, 38, 17, FontStyle.Bold, TextMain);
             uptimeLabel.TextAlign = ContentAlignment.MiddleCenter;
             hero.Controls.Add(uptimeLabel);
             Label uptimeCaption = NewLabel("THỜI GIAN", 730, 52, 110, 20, 8, FontStyle.Bold, TextMuted);

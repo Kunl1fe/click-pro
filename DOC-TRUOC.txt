@@ -1,5 +1,8 @@
 LU CLICK PRO — CHAMPAGNE EDITION
 
+v1.6: sửa co giãn DPI và chữ bị cắt trên màn hình có Scale lớn.
+Sau khi đổi Scale trong Windows, thoát và mở lại app.
+
 Mở LU-Click-Pro.exe ngay trong thư mục này để chạy.
 Windows 10/11 64-bit, dùng .NET Framework 4.x có trên Windows.
 
