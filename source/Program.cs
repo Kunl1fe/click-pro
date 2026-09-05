@@ -315,7 +315,7 @@ namespace LuClickPro
             topMostCheck.CheckedChanged += delegate { TopMost = topMostCheck.Checked; };
             right.Controls.Add(topMostCheck);
 
-            lockButton = MakeSmallButton("KHÓA CHỈNH SỬA", 214, 298, 190, 38, Purple);
+            lockButton = MakeSmallButton("KHÓA CHẠY PROFILE", 214, 298, 190, 38, Purple);
             lockButton.Click += delegate { ToggleProfileLock(); };
             right.Controls.Add(lockButton);
 
@@ -517,14 +517,14 @@ namespace LuClickPro
         private void UpdateSpeedControls()
         {
             if (intervalBox == null) return;
-            intervalBox.Enabled = intervalRadio.Checked && !profiles[selectedProfile].Locked;
-            cpsBox.Enabled = cpsRadio.Checked && !profiles[selectedProfile].Locked;
+            intervalBox.Enabled = intervalRadio.Checked;
+            cpsBox.Enabled = cpsRadio.Checked;
         }
 
         private void UpdatePositionControls()
         {
             if (xBox == null) return;
-            bool enabled = fixedRadio.Checked && !profiles[selectedProfile].Locked;
+            bool enabled = fixedRadio.Checked;
             xBox.Enabled = enabled;
             yBox.Enabled = enabled;
             captureButton.Enabled = enabled;
@@ -536,6 +536,7 @@ namespace LuClickPro
         {
             SaveCurrentToProfile();
             profiles[selectedProfile].Locked = !profiles[selectedProfile].Locked;
+            if (profiles[selectedProfile].Locked && running) StopClicking(false);
             UpdateLockControls();
             SaveSettings();
         }
@@ -546,19 +547,19 @@ namespace LuClickPro
             bool locked = profiles[selectedProfile].Locked;
             foreach (Control c in new Control[] { buttonBox, clickTypeBox, intervalRadio, cpsRadio,
                 untilStoppedRadio, repeatRadio, cursorRadio, fixedRadio, jitterBox, varianceBox })
-                c.Enabled = !locked;
-            repeatBox.Enabled = !locked && repeatRadio.Checked;
+                c.Enabled = true;
+            repeatBox.Enabled = repeatRadio.Checked;
             UpdateSpeedControls();
             UpdatePositionControls();
-            lockButton.Text = locked ? "ĐÃ KHÓA · MỞ KHÓA" : "KHÓA CHỈNH SỬA";
+            lockButton.Text = locked ? "ĐÃ KHÓA · MỞ KHÓA" : "KHÓA CHẠY PROFILE";
             lockButton.BackColor = locked ? Color.FromArgb(83, 67, 43) : Card2;
             lockButton.FlatAppearance.BorderColor = locked ? Cyan : TextMuted;
+            UpdateRunningUi();
             UpdateProfileButtons();
         }
 
         private void CapturePosition()
         {
-            if (profiles[selectedProfile].Locked) return;
             Point p = Cursor.Position;
             SetNumeric(xBox, p.X);
             SetNumeric(yBox, p.Y);
@@ -573,6 +574,7 @@ namespace LuClickPro
 
         private void StartClicking()
         {
+            if (profiles[selectedProfile].Locked) return;
             if (running) return;
             activeButton = buttonBox.SelectedIndex;
             activeDoubleClick = clickTypeBox.SelectedIndex == 1;
@@ -654,6 +656,7 @@ namespace LuClickPro
                 if (activeDoubleClick && (activeRepeatLimit == 0 || totalClicks < activeRepeatLimit))
                 {
                     Thread.Sleep(Math.Min(80, Math.Max(20, activeBaseInterval / 3)));
+                    if (!running || generation != Thread.VolatileRead(ref runGeneration)) return;
                     PerformMouseClick(activeButton);
                     Interlocked.Increment(ref totalClicks);
                 }
@@ -729,16 +732,20 @@ namespace LuClickPro
 
         private void UpdateRunningUi()
         {
-            statusLabel.Text = running ? "ĐANG CHẠY" : "SẴN SÀNG";
+            bool locked = profiles[selectedProfile].Locked;
+            statusLabel.Text = running ? "ĐANG CHẠY" : (locked ? "PROFILE ĐÃ KHÓA" : "SẴN SÀNG");
             statusDot.BackColor = running ? Green : TextMuted;
             startButton.Text = running ? "■   DỪNG PROFILE F" + (selectedProfile + 1) : "▶   CHẠY PROFILE F" + (selectedProfile + 1);
             startButton.BackColor = running ? Red : Purple;
+            startButton.Enabled = !locked || running;
+            if (locked && !running) startButton.Text = "PROFILE F" + (selectedProfile + 1) + " ĐÃ KHÓA CHẠY";
             UpdateProfileButtons();
         }
 
         private void SelectProfile(int index, bool runFromHotkey)
         {
             if (index < 0 || index >= profiles.Length) return;
+            if (runFromHotkey && profiles[index].Locked) return;
             if (runFromHotkey && running && selectedProfile == index)
             {
                 StopClicking(false);

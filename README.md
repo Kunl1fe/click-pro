@@ -21,7 +21,7 @@ Yêu cầu Windows 10/11 64-bit và .NET Framework 4.x. Không cần cài SDK đ
 Chọn ô profile để chỉnh thiết lập. Current click theo con trỏ; Point click tại tọa độ cố định.
 Chỉ một profile chạy tại một thời điểm. Khi nhấn phím của profile khác, ứng dụng chuyển sang profile đó.
 
-**Khóa profile (v1.4):** chọn profile rồi bấm **KHÓA CHỈNH SỬA**. Các thông số và việc lấy tọa độ bằng F7 sẽ bị khóa. F1–F6 vẫn chạy/dừng bình thường. Bấm **ĐÃ KHÓA · MỞ KHÓA** để chỉnh lại. Trạng thái khóa được lưu riêng cho từng profile ngay khi bật/tắt khóa.
+**Khóa chạy profile (v1.5):** chọn profile rồi bấm **KHÓA CHẠY PROFILE**. Profile đó không chạy bằng phím F, nút chạy hoặc menu khay hệ thống. Nhấn nhầm phím của profile bị khóa không ảnh hưởng profile khác đang chạy. Khóa profile đang chạy sẽ dừng nó. Các thông số và F7 vẫn chỉnh được. Bấm **ĐÃ KHÓA · MỞ KHÓA** để cho phép chạy lại. Trạng thái khóa lưu riêng và tự lưu ngay khi thay đổi.
 
 Cấu hình lưu khi thoát tại `%APPDATA%\LuClickPro\settings.ini`. File cấu hình cá nhân không nằm trong repo.
 Tốc độ thực tế phụ thuộc Windows và ứng dụng nhận click. EXE chưa ký số.
