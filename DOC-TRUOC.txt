@@ -1,0 +1,16 @@
+LU CLICK PRO — CHAMPAGNE EDITION
+
+Mở LU-Click-Pro.exe ngay trong thư mục này để chạy.
+Windows 10/11 64-bit, dùng .NET Framework 4.x có trên Windows.
+
+F1–F6: chạy/dừng profile tương ứng. Chỉ một profile chạy tại một thời điểm.
+F7: lấy tọa độ con trỏ cho profile đang chọn.
+F8: dừng.
+Current: theo con trỏ. Point: vị trí cố định.
+
+Cấu hình được lưu khi thoát tại %APPDATA%\LuClickPro\settings.ini.
+Để mang cấu hình sang máy khác, thoát ứng dụng rồi chép settings.ini sang
+cùng đường dẫn trên máy mới. Tọa độ Point có thể cần lấy lại.
+
+Nếu tải toàn bộ repo, source/docs/dist là mã nguồn, ảnh và gói phát hành.
+Không cần mở những thư mục đó để chạy ứng dụng.

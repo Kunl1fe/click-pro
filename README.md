@@ -6,7 +6,10 @@ Auto clicker Windows với nền than, điểm nhấn vàng champagne và 6 prof
 
 ## Chạy ứng dụng
 
-Tải `dist/LU-Click-Pro-Windows-x64.zip`, giải nén rồi mở `LU-Click-Pro.exe`.
+**[Tải ZIP chạy ngay](https://github.com/Kunl1fe/click-pro/raw/refs/heads/main/dist/LU-Click-Pro-Windows-x64.zip)** · **[Tải EXE trực tiếp](https://github.com/Kunl1fe/click-pro/raw/refs/heads/main/LU-Click-Pro.exe)**
+
+Giải nén gói chạy là thấy ngay `LU-Click-Pro.exe` và `DOC-TRUOC.txt`, không cần mở thư mục con hay giải nén lần nữa.
+Nếu dùng **Code → Download ZIP**, mở thư mục `click-pro-main` sau khi giải nén: file `LU-Click-Pro.exe` cũng nằm ngay tại đó.
 Yêu cầu Windows 10/11 64-bit và .NET Framework 4.x. Không cần cài SDK để chạy.
 
 | Phím | Chức năng |
@@ -25,6 +28,7 @@ Tốc độ thực tế phụ thuộc Windows và ứng dụng nhận click. EXE
 
 Chạy `powershell -ExecutionPolicy Bypass -File .\source\build.ps1` trên Windows 64-bit có compiler .NET Framework.
 Kết quả là `LU-Click-Pro.exe` ở thư mục gốc.
+Chạy `powershell -ExecutionPolicy Bypass -File .\source\package.ps1` để build và cập nhật cả ZIP trong `dist`.
 
 ## Bản 1.3
 
