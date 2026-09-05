@@ -38,6 +38,10 @@ Chạy `powershell -ExecutionPolicy Bypass -File .\source\package.ps1` để bui
 
 Co giãn bố cục theo DPI hệ thống thay cho kích thước cố định, tăng chiều cao số thống kê để tránh cắt chữ. Đã kiểm tra mô phỏng khung và font ở 100%, 125%, 150%, 200%; chưa kiểm tra trực tiếp trên máy 2K của người dùng. Thoát và mở lại app sau khi thay đổi Scale của Windows. Khi chuyển giữa màn hình khác DPI, Windows có thể phóng ảnh cửa sổ nên độ nét có thể giảm.
 
+### Cập nhật v1.7 — Cửa sổ gọn
+
+Thay cách phóng toàn cửa sổ của v1.6 bằng bố cục 920×715 và font tính theo pixel. Chữ và khung cùng dùng kích thước thiết kế, tránh chữ lớn vượt khung mà không tự zoom cửa sổ theo Scale. Cửa sổ vẫn thu gọn và cuộn nếu màn hình thiếu chỗ. Khi đổi Scale hoặc màn hình chính, thoát và mở lại ứng dụng. Chưa kiểm tra trực tiếp trên máy 2K đã báo lỗi.
+
 - Giao diện Champagne: nền than, viền vàng, thẻ bo góc và trạng thái chọn tương phản.
 - Thanh đóng/thu nhỏ luôn tách khỏi vùng nội dung cuộn.
 - Sáu profile; click trái/phải/giữa, đơn/đúp, khoảng nghỉ hoặc CPS, giới hạn click và tùy chỉnh vị trí.

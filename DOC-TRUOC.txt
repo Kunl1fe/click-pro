@@ -1,6 +1,6 @@
 LU CLICK PRO — CHAMPAGNE EDITION
 
-v1.6: sửa co giãn DPI và chữ bị cắt trên màn hình có Scale lớn.
+v1.7: cửa sổ gọn 920×715, font pixel đồng bộ với khung, không tự zoom theo Scale.
 Sau khi đổi Scale trong Windows, thoát và mở lại app.
 
 Mở LU-Click-Pro.exe ngay trong thư mục này để chạy.

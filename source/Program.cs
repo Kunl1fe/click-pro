@@ -105,14 +105,13 @@ namespace LuClickPro
             SuspendLayout();
             Text = "LU CLICK PRO • Champagne Edition";
             ClientSize = new Size(920, 715);
-            AutoScaleDimensions = new SizeF(96f, 96f);
-            AutoScaleMode = AutoScaleMode.Dpi;
+            AutoScaleMode = AutoScaleMode.None;
             MinimumSize = new Size(640, 460);
             StartPosition = FormStartPosition.CenterScreen;
             FormBorderStyle = FormBorderStyle.None;
             BackColor = Bg;
             ForeColor = TextMain;
-            Font = new Font("Segoe UI", 9.5f);
+            Font = UiFont("Segoe UI", 9.5f);
             DoubleBuffered = true;
             Padding = new Padding(1);
             Icon = AppIcon.Create();
@@ -153,7 +152,7 @@ namespace LuClickPro
 
             Label logo = new Label();
             logo.Text = "LU";
-            logo.Font = new Font("Segoe UI", 14f, FontStyle.Bold);
+            logo.Font = UiFont("Segoe UI", 14f, FontStyle.Bold);
             logo.ForeColor = Color.White;
             logo.BackColor = Purple;
             logo.TextAlign = ContentAlignment.MiddleCenter;
@@ -162,7 +161,7 @@ namespace LuClickPro
 
             Label brand = new Label();
             brand.Text = "CLICK PRO";
-            brand.Font = new Font("Segoe UI Semibold", 14f, FontStyle.Bold);
+            brand.Font = UiFont("Segoe UI Semibold", 14f, FontStyle.Bold);
             brand.ForeColor = TextMain;
             brand.AutoSize = true;
             brand.Location = new Point(76, 12);
@@ -171,7 +170,7 @@ namespace LuClickPro
 
             Label subtitle = new Label();
             subtitle.Text = "P R E C I S I O N   /   C H A M P A G N E";
-            subtitle.Font = new Font("Segoe UI", 7f);
+            subtitle.Font = UiFont("Segoe UI", 7f);
             subtitle.ForeColor = TextMuted;
             subtitle.AutoSize = true;
             subtitle.Location = new Point(78, 37);
@@ -233,7 +232,7 @@ namespace LuClickPro
             {
                 int profileIndex = i;
                 Button button = MakeSmallButton("F" + (i + 1), 93 + i * 126, 8, 112, 36, i == 0 ? Purple : Card2);
-                button.Font = new Font("Segoe UI Semibold", 10f, FontStyle.Bold);
+                button.Font = UiFont("Segoe UI Semibold", 10f, FontStyle.Bold);
                 button.Click += delegate { SelectProfile(profileIndex, false); };
                 profileButtons[i] = button;
                 profileBar.Controls.Add(button);
@@ -331,7 +330,7 @@ namespace LuClickPro
 
             startButton = new Button();
             startButton.Text = "▶   BẮT ĐẦU   ·   F6";
-            startButton.Font = new Font("Segoe UI Semibold", 12f, FontStyle.Bold);
+            startButton.Font = UiFont("Segoe UI Semibold", 12f, FontStyle.Bold);
             startButton.ForeColor = TextMain;
             startButton.BackColor = Purple;
             startButton.FlatStyle = FlatStyle.Flat;
@@ -415,7 +414,7 @@ namespace LuClickPro
             l.Text = text;
             l.ForeColor = color;
             l.BackColor = Color.Transparent;
-            l.Font = new Font("Segoe UI", size, style);
+            l.Font = UiFont("Segoe UI", size, style);
             l.SetBounds(x, y, w, h);
             return l;
         }
@@ -427,7 +426,7 @@ namespace LuClickPro
             box.FlatStyle = FlatStyle.Standard;
             box.BackColor = Card2;
             box.ForeColor = TextMain;
-            box.Font = new Font("Segoe UI", 10f);
+            box.Font = UiFont("Segoe UI", 10f);
             box.Items.AddRange(items);
             box.SelectedIndex = 0;
             box.SetBounds(x, y, width, 36);
@@ -443,7 +442,7 @@ namespace LuClickPro
             n.BackColor = Card2;
             n.ForeColor = TextMain;
             n.BorderStyle = BorderStyle.FixedSingle;
-            n.Font = new Font("Segoe UI Semibold", 10f);
+            n.Font = UiFont("Segoe UI Semibold", 10f);
             n.TextAlign = HorizontalAlignment.Center;
             n.SetBounds(x, y, width, 36);
             return n;
@@ -490,7 +489,7 @@ namespace LuClickPro
         {
             Button b = new Button();
             b.Text = text;
-            b.Font = new Font("Segoe UI Semibold", 8.5f, FontStyle.Bold);
+            b.Font = UiFont("Segoe UI Semibold", 8.5f, FontStyle.Bold);
             b.ForeColor = Color.White;
             b.BackColor = color;
             b.FlatStyle = FlatStyle.Flat;
@@ -505,7 +504,7 @@ namespace LuClickPro
         {
             Button b = new Button();
             b.Text = text;
-            b.Font = new Font("Segoe UI", 12f);
+            b.Font = UiFont("Segoe UI", 12f);
             b.ForeColor = TextMuted;
             b.BackColor = Color.Transparent;
             b.FlatStyle = FlatStyle.Flat;
@@ -514,6 +513,13 @@ namespace LuClickPro
             b.MouseEnter += delegate { b.ForeColor = hover; b.BackColor = Color.FromArgb(32, 38, 56); };
             b.MouseLeave += delegate { b.ForeColor = TextMuted; b.BackColor = Color.Transparent; };
             return b;
+        }
+
+        // Match the 96-DPI design using pixel fonts, so Windows text DPI does not
+        // enlarge text inside a fixed-size compact layout.
+        private static Font UiFont(string family, float points, FontStyle style = FontStyle.Regular)
+        {
+            return new Font(family, points * 96f / 72f, style, GraphicsUnit.Pixel);
         }
 
         private Panel Divider(int x, int y, int width)
