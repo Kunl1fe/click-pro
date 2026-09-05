@@ -8,6 +8,9 @@ F7: lấy tọa độ con trỏ cho profile đang chọn.
 F8: dừng.
 Current: theo con trỏ. Point: vị trí cố định.
 
+v1.4: KHÓA CHỈNH SỬA bảo vệ thông số của từng profile và chặn F7 đổi tọa độ.
+F1–F6 vẫn chạy/dừng. Bấm ĐÃ KHÓA · MỞ KHÓA để chỉnh lại.
+
 Cấu hình được lưu khi thoát tại %APPDATA%\LuClickPro\settings.ini.
 Để mang cấu hình sang máy khác, thoát ứng dụng rồi chép settings.ini sang
 cùng đường dẫn trên máy mới. Tọa độ Point có thể cần lấy lại.

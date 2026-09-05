@@ -65,6 +65,7 @@ namespace LuClickPro
         private Label uptimeLabel;
         private Button startButton;
         private Button captureButton;
+        private Button lockButton;
         private Panel statusDot;
         private Button[] profileButtons;
         private ProfileConfig[] profiles;
@@ -314,9 +315,9 @@ namespace LuClickPro
             topMostCheck.CheckedChanged += delegate { TopMost = topMostCheck.Checked; };
             right.Controls.Add(topMostCheck);
 
-            Label profileHint = NewLabel("F1–F6: 6 cấu hình riêng", 205, 302, 199, 28, 8.5f, FontStyle.Regular, Cyan);
-            profileHint.TextAlign = ContentAlignment.MiddleRight;
-            right.Controls.Add(profileHint);
+            lockButton = MakeSmallButton("KHÓA CHỈNH SỬA", 214, 298, 190, 38, Purple);
+            lockButton.Click += delegate { ToggleProfileLock(); };
+            right.Controls.Add(lockButton);
 
             startButton = new Button();
             startButton.Text = "▶   BẮT ĐẦU   ·   F6";
@@ -366,6 +367,7 @@ namespace LuClickPro
             UpdateSpeedControls();
             UpdatePositionControls();
             UpdateProfileButtons();
+            UpdateLockControls();
         }
 
         private Panel MakeCard(int x, int y, int w, int h)
@@ -515,23 +517,48 @@ namespace LuClickPro
         private void UpdateSpeedControls()
         {
             if (intervalBox == null) return;
-            intervalBox.Enabled = intervalRadio.Checked;
-            cpsBox.Enabled = cpsRadio.Checked;
+            intervalBox.Enabled = intervalRadio.Checked && !profiles[selectedProfile].Locked;
+            cpsBox.Enabled = cpsRadio.Checked && !profiles[selectedProfile].Locked;
         }
 
         private void UpdatePositionControls()
         {
             if (xBox == null) return;
-            bool enabled = fixedRadio.Checked;
+            bool enabled = fixedRadio.Checked && !profiles[selectedProfile].Locked;
             xBox.Enabled = enabled;
             yBox.Enabled = enabled;
             captureButton.Enabled = enabled;
             if (editingProfileLabel != null)
-                editingProfileLabel.Text = "ĐANG CHỈNH F" + (selectedProfile + 1) + (enabled ? " · POINT" : " · CURRENT");
+                editingProfileLabel.Text = (profiles[selectedProfile].Locked ? "ĐÃ KHÓA F" : "ĐANG CHỈNH F") + (selectedProfile + 1) + (fixedRadio.Checked ? " · POINT" : " · CURRENT");
+        }
+
+        private void ToggleProfileLock()
+        {
+            SaveCurrentToProfile();
+            profiles[selectedProfile].Locked = !profiles[selectedProfile].Locked;
+            UpdateLockControls();
+            SaveSettings();
+        }
+
+        private void UpdateLockControls()
+        {
+            if (lockButton == null) return;
+            bool locked = profiles[selectedProfile].Locked;
+            foreach (Control c in new Control[] { buttonBox, clickTypeBox, intervalRadio, cpsRadio,
+                untilStoppedRadio, repeatRadio, cursorRadio, fixedRadio, jitterBox, varianceBox })
+                c.Enabled = !locked;
+            repeatBox.Enabled = !locked && repeatRadio.Checked;
+            UpdateSpeedControls();
+            UpdatePositionControls();
+            lockButton.Text = locked ? "ĐÃ KHÓA · MỞ KHÓA" : "KHÓA CHỈNH SỬA";
+            lockButton.BackColor = locked ? Color.FromArgb(83, 67, 43) : Card2;
+            lockButton.FlatAppearance.BorderColor = locked ? Cyan : TextMuted;
+            UpdateProfileButtons();
         }
 
         private void CapturePosition()
         {
+            if (profiles[selectedProfile].Locked) return;
             Point p = Cursor.Position;
             SetNumeric(xBox, p.X);
             SetNumeric(yBox, p.Y);
@@ -736,7 +763,7 @@ namespace LuClickPro
                 profileButtons[i].ForeColor = active ? Color.White : TextMuted;
                 profileButtons[i].FlatAppearance.BorderSize = active ? 2 : 1;
                 profileButtons[i].FlatAppearance.BorderColor = active ? Cyan : Color.FromArgb(79, 77, 70);
-                profileButtons[i].Text = "F" + (i + 1) + (active ? "  •" : "");
+                profileButtons[i].Text = "F" + (i + 1) + (profiles[i].Locked ? " · KHÓA" : (active ? "  •" : ""));
             }
         }
 
@@ -842,6 +869,7 @@ namespace LuClickPro
                     s.AppendLine(p + "Y=" + c.Y);
                     s.AppendLine(p + "Jitter=" + c.Jitter);
                     s.AppendLine(p + "Variance=" + c.Variance);
+                    s.AppendLine(p + "Locked=" + c.Locked);
                 }
                 File.WriteAllText(SettingsPath, s.ToString(), Encoding.UTF8);
             }
@@ -876,6 +904,7 @@ namespace LuClickPro
                     c.Y = GetInt(cfg, p + "Y", c.Y);
                     c.Jitter = GetInt(cfg, p + "Jitter", c.Jitter);
                     c.Variance = GetInt(cfg, p + "Variance", c.Variance);
+                    c.Locked = GetBool(cfg, p + "Locked", false);
                     profiles[i] = c;
                 }
                 selectedProfile = Math.Max(0, Math.Min(profiles.Length - 1, GetInt(cfg, "SelectedProfile", 0)));
@@ -922,7 +951,7 @@ namespace LuClickPro
             SetNumeric(varianceBox, c.Variance);
             UpdateSpeedControls();
             UpdatePositionControls();
-            repeatBox.Enabled = repeatRadio.Checked;
+            UpdateLockControls();
         }
 
         private static string Get(Dictionary<string, string> cfg, string key, string fallback)
@@ -963,6 +992,7 @@ namespace LuClickPro
 
     internal sealed class ProfileConfig
     {
+        internal bool Locked;
         internal int Button;
         internal int ClickType;
         internal bool UseCps;
